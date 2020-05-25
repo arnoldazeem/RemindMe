@@ -2,14 +2,16 @@ package com.example.arnold.remindme;
 
 public class RemindmeItem {
 
-    String hymn;
+    Long id;
     String title;
-    String hymnum;
+    String body;
 
-    public RemindmeItem(String hymn) {
+
+
+    public RemindmeItem(Long id, String title, String body) {
         // TODO Auto-generated constructor stub
-        this.hymnum = hymnum;
-        this.hymn = hymn;
+        this.id = id;
+        this.body = body;
         this.title = title;
     }
 
@@ -21,20 +23,21 @@ public class RemindmeItem {
         this.title = title;
     }
 
-    public String getHymnum() {
-        return hymnum;
+
+    public String getBody() {
+        return body;
     }
 
-    public void setHymnum(String hymnum) {
-        this.hymnum = hymnum;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public String getHymn() {
-        return hymn;
+    public Long getId() {
+        return id;
     }
 
-    public void setHymn(String hymn) {
-        this.hymn = hymn;
+    public void setId(Long id) {
+        this.id = id;
     }
 
 

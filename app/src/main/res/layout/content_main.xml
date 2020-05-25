@@ -6,18 +6,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
-
-
-        <TextView
-            android:id="@+id/empty"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_reminders"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 
 </LinearLayout>

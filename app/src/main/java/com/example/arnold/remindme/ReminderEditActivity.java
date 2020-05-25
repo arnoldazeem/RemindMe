@@ -102,7 +102,6 @@ public class ReminderEditActivity extends Activity {
 
     private DatePickerDialog showDatePicker() {
 
-
         DatePickerDialog datePicker = new DatePickerDialog(ReminderEditActivity.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -154,7 +153,7 @@ public class ReminderEditActivity extends Activity {
             public void onClick(View view) {
                 saveState();
                 setResult(RESULT_OK);
-                Toast.makeText(ReminderEditActivity.this, getString(R.string.task_saved_message), Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(ReminderEditActivity.this, getString(R.string.task_saved_message), Toast.LENGTH_SHORT).show();
                 finish();
             }
 
@@ -165,14 +164,14 @@ public class ReminderEditActivity extends Activity {
     }
 
     private void populateFields()  {
-
-
-
         // Only populate the text boxes and change the calendar date
         // if the row is not null from the database.
         if (mRowId != null) {
             Cursor reminder = mDbHelper.fetchReminder(mRowId);
+
+
             startManagingCursor(reminder);
+
             mTitleText.setText(reminder.getString(
                     reminder.getColumnIndexOrThrow(RemindersDbAdapter.KEY_TITLE)));
             mBodyText.setText(reminder.getString(
@@ -243,6 +242,9 @@ public class ReminderEditActivity extends Activity {
         if (mRowId == null) {
 
             long id = mDbHelper.createReminder(title, body, reminderDateTime);
+
+            Toast.makeText(ReminderEditActivity.this, id + "", Toast.LENGTH_SHORT).show();
+
             if (id > 0) {
                 mRowId = id;
             }

@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Declaring RecyclerView
         RecyclerView mRecyclerView;
+        TextView noRemind;
         RecyclerView.Adapter mAdapter;
         RecyclerView.LayoutManager mLayoutManager;
         private CustomRemindMeAdapter adapter;
@@ -44,14 +48,15 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
 
             mRecyclerView = (RecyclerView) findViewById(R.id.list);
+
+           // noRemind = (TextView) findViewById(R.id.empty);
+
             mRecyclerView.setHasFixedSize(true);
 
             mDbHelper = new RemindersDbAdapter(this);
 
-            mDbHelper.open();
 
-           // fillData();
-
+           fillData();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,18 +76,27 @@ public class MainActivity extends AppCompatActivity {
 
         private void fillData() {
 
+            mDbHelper.open();
+
+            data = new ArrayList<RemindmeItem>();
+
             Cursor remindersCursor = mDbHelper.fetchAllReminders();
 
             remindersCursor.moveToFirst();
 
             while (!remindersCursor.isAfterLast()) {
 
-                String name = remindersCursor
+                String title = remindersCursor
                         .getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TITLE));
 
-                //String num = getHymns.getString(getHymns.getColumnIndex(HYMN_ID));
 
-                RemindmeItem remind = new RemindmeItem(name);
+                String body = (remindersCursor.getString(
+                        remindersCursor.getColumnIndexOrThrow(RemindersDbAdapter.KEY_BODY)));
+
+                Long id = (remindersCursor.getLong(
+                        remindersCursor.getColumnIndexOrThrow(RemindersDbAdapter.KEY_ROWID)));
+
+                RemindmeItem remind = new RemindmeItem(id,title,body);
 
                 data.add(remind);
 
@@ -90,21 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-           // Cursor remindersCursor = mDbHelper.fetchAllReminders();
-           // startManagingCursor(remindersCursor);
-
-            // Create an array to specify the fields we want to display in the list (only TITLE)
-            //String[] from = new String[]{RemindersDbAdapter.KEY_TITLE};
-
-            // and an array of the fields we want to bind those fields to (in this case just text1)
-            int[] to = new int[]{R.id.text1};
-
-            // Now create a simple cursor adapter and set it to display
-           // SimpleCursorAdapter reminders =
-           //         new SimpleCursorAdapter(this, R.layout.reminderme_row, remindersCursor, from, to);
-
-           // setListAdapter(reminders);
-
+            mDbHelper.close();
 
             adapter = new CustomRemindMeAdapter(MainActivity.this, data);
 
@@ -116,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-
         }
+
+
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
